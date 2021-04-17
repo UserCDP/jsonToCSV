@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import QApplication, QWidget, QInputDialog, QLineEdit, QFil
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import pyqtSlot
 import json
+import csv
 
 class App(QWidget):
 
@@ -43,7 +44,55 @@ class App(QWidget):
             with open(fileName, "r") as jayson:
                 data = json.load(jayson)
 
-            print(data)
+            file_name = "data"
+            titles = []
+            rows = []
+
+            entries = 0
+            for info in data:
+                entries += 1
+
+            if entries == 1:
+                file_name = info
+
+                for info in data[file_name][0]:
+                    #print(info)
+                    titles.append(info)
+
+                #print(titles)
+
+                index = 0
+
+                for key in titles:
+                    rows.append([])
+                    for info in data[file_name]:
+                        #print(info)
+                        rows[index].append(info[key])
+                    index +=1
+
+                #print(f"the rows are: {rows}")
+                with open(str(file_name) + ".csv", "w") as csvfile:
+                    csvwriter = csv.writer(csvfile)
+                    csvwriter.writerow(titles)
+                    csvwriter.writerows(rows)
+
+            else:
+                for info in data[0]:
+                    print(info)
+                    titles.appendd(info)
+
+                index = 0
+
+                for key in titles:
+                    rows.append([])
+                    for info in data:
+                        rows[index].append(info[key])
+                    index += 1
+                    
+                with open(str(file_name) + ".csv", "w") as csvfile:
+                    csvwriter = csv.writer(csvfile)
+                    csvwriter.writerow(titles)
+                    csvwriter.writerows(rows)
 
             # TODO extract the data and write it with commas!
 
