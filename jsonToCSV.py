@@ -55,39 +55,35 @@ class App(QWidget):
             if entries == 1:
                 file_name = info
 
-# do not CHANGE!!!!!!!
                 for info in data[file_name][0]:
-                    #print(info)
                     titles.append(info)
 
-                rows.append([])
-                for key in titles:
-                    rows.append([])
-# THIS ^ ^ ^ ^ ^^ ^ ^ ^^ ^ ^^^ ^^ ^ ^^ ^^ ^ 
-
+                index = 0
                 for info in data[file_name]:
-                    index = 0
+                    rows.append([])
                     for key in titles:
                         rows[index].append(info[key])
-                    index += 1 # it stays here, because the rows array shows us how many categories(keys) we have
-                
+                    index += 1 # index defines at what row we find ourselves
+
                 with open(str(file_name) + ".csv", "w") as csvfile:
                     csvwriter = csv.writer(csvfile)
                     csvwriter.writerow(titles)
                     csvwriter.writerows(rows)
 
-            else:
+            else: #the json doesn't start with a section
                 for info in data[0]:
                     print(info)
-                    titles.appendd(info)
+                    titles.append(info)
 
                 index = 0
-
-                for key in titles:
+                for info in data:
                     rows.append([])
-                    for info in data:
+                    for key in titles:
                         rows[index].append(info[key])
                     index += 1
+
+                for list in rows:
+                    print(list)
 
                 with open(str(file_name) + ".csv", "w") as csvfile:
                     csvwriter = csv.writer(csvfile)
